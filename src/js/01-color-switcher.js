@@ -1,7 +1,6 @@
 const startButton = document.querySelector('button[data-start]');
 const stopButton = document.querySelector('button[data-stop]');
 const bgColor = document.querySelector('body');
-console.log(startButton);
 
 // ------------ Интервал-----------//
 const handleInterval = setInterval(changeBgColor, 2000);
