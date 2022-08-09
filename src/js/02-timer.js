@@ -8,6 +8,7 @@ const daysValue = document.querySelector('span[data-days]');
 const hoursValue = document.querySelector('span[data-hours]');
 const minutesValue = document.querySelector('span[data-minutes]');
 const secondsValue = document.querySelector('span[data-seconds]');
+console.log(startButton);
 
 const onButtonStart = startButton.addEventListener('click', () => {
   counter.start();
@@ -34,9 +35,9 @@ const counter = {
       const deltaTime = startTime - currentTime;
       const timeComponents = convertMs(deltaTime);
 
-      //   if (counter.start) {
-      //     startButton.disabled = true;
-      //   }
+      // if (counter.start) {
+      //   startButton.disabled = true;
+      // }
       if (deltaTime <= 0) {
         clearInterval;
       } else {
@@ -68,8 +69,10 @@ function convertMs(ms) {
 }
 
 function counterValue(deltaTime) {
-  daysValue.textContent = timeComponents.days;
-  hoursValue.textContent = timeComponents.hours;
-  minutesValue.textContent = timeComponents.minutes;
-  secondsValue.textContent = timeComponents.seconds;
+  daysValue.textContent = counter.days;
+  hoursValue.textContent = counter.hours;
+  minutesValue.textContent = counter.minutes;
+  secondsValue.textContent = counter.seconds;
 }
+
+console.log('qweqweqweqwe');
