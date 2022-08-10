@@ -1,18 +1,13 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const inputDateRef = document.getElementById('datetime-picker');
-const startButton = document.querySelector('button[data-start]');
-const timerRef = document.querySelector('.timer');
-const daysValue = document.querySelector('span[data-days]');
-const hoursValue = document.querySelector('span[data-hours]');
-const minutesValue = document.querySelector('span[data-minutes]');
-const secondsValue = document.querySelector('span[data-seconds]');
-console.log(startButton);
-
-const onButtonStart = startButton.addEventListener('click', () => {
-  counter.start();
-});
+const refs = {
+  days: document.querySelector('[data-days]'),
+  hours: document.querySelector('[data-hours]'),
+  minutes: document.querySelector('[data-minutes]'),
+  seconds: document.querySelector('[data-seconds]'),
+  startBtn: document.querySelector('[data-start]'),
+};
 
 const options = {
   enableTime: true,
@@ -20,34 +15,61 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    const selectedDate = selectedDates[0].getTime();
+    const currentDate = Date.now();
+    if (currentDate > selectedDate) {
+      alert('Please choose a date in the future');
+      return;
+    }
+    refs.startBtn.disabled = false;
   },
 };
 
-const fp = flatpickr(inputDateRef, { options });
+refs.startBtn.disabled = true;
 
-const counter = {
+flatpickr('#datetime-picker', options);
+
+const datePicker = flatpickr('#datetime-picker', options);
+
+const timer = {
+  intervalId: null,
+  isActive: false,
+
   start() {
-    const startTime = Date.now();
+    if (this.isActive) {
+      return;
+    }
+    const startTime = datePicker.selectedDates[0];
+    this.isActive = true;
 
-    setInterval(() => {
+    this.intervalId = setInterval(() => {
       const currentTime = Date.now();
       const deltaTime = startTime - currentTime;
-      const timeComponents = convertMs(deltaTime);
-
-      // if (counter.start) {
-      //   startButton.disabled = true;
-      // }
-      if (deltaTime <= 0) {
-        clearInterval;
-      } else {
-        counterValue(timeComponents);
+      if (deltaTime < 0) {
+        clearInterval(this.intervalId);
+        this.isActive = false;
+        return;
       }
-      console.log(timeComponents);
+      const timeComponents = convertMs(deltaTime);
+      updateClockface(timeComponents);
     }, 1000);
   },
 };
-// counter.start(convertMs);
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
+
+function updateClockface({ days, hours, minutes, seconds }) {
+  refs.days.textContent = addLeadingZero(days);
+  refs.hours.textContent = addLeadingZero(hours);
+  refs.minutes.textContent = addLeadingZero(minutes);
+  refs.seconds.textContent = addLeadingZero(seconds);
+}
+
+refs.startBtn.addEventListener('click', () => {
+  timer.start();
+});
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -67,12 +89,3 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-function counterValue(deltaTime) {
-  daysValue.textContent = counter.days;
-  hoursValue.textContent = counter.hours;
-  minutesValue.textContent = counter.minutes;
-  secondsValue.textContent = counter.seconds;
-}
-
-console.log('qweqweqweqwe');

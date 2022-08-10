@@ -2,43 +2,33 @@ const startButton = document.querySelector('button[data-start]');
 const stopButton = document.querySelector('button[data-stop]');
 const bgColor = document.querySelector('body');
 
-// ------------ Интервал-----------//
-const handleInterval = setInterval(changeBgColor, 2000);
-
-// /----------- Генератор цветов -------------/
-
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 
-// --------------- Кнопка старт ----------//
 const handleStartBtnClick = startButton.addEventListener(
   'click',
-  changeBgColor
+  onStartBtnClick
 );
 
-// function disableStartBtn() {
-//   if (handleStartBtnClick) {
-//     startButton.setAttribute('disabled', 'true');
-//     console.log('останавливаем!');
-//   }
-// }
-
-// ------------ Меняет цвет фона-------------//
-function changeBgColor() {
+function onStartBtnClick() {
   bgColor.style.backgroundColor = getRandomHexColor();
-  if (changeBgColor) {
+  timerId = setInterval(() => {
+    bgColor.style.backgroundColor = getRandomHexColor();
+  }, 1000);
+  if (onStartBtnClick) {
     startButton.disabled = true;
+    stopButton.disabled = false;
   }
 }
+stopButton.disabled = true;
 
-// -------------- Кнопка стоп ------------///
 const handleStopBtn = stopButton.addEventListener('click', stopInterval);
 
-// ------------- Очищает интервал -------------//
 function stopInterval() {
-  clearInterval(handleInterval);
+  clearInterval(timerId);
   if (stopInterval) {
     startButton.disabled = false;
+    stopButton.disabled = true;
   }
 }
