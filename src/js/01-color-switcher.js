@@ -12,7 +12,6 @@ const handleStartBtnClick = startButton.addEventListener(
 );
 
 function onStartBtnClick() {
-  bgColor.style.backgroundColor = getRandomHexColor();
   timerId = setInterval(() => {
     bgColor.style.backgroundColor = getRandomHexColor();
   }, 1000);

@@ -7,6 +7,7 @@ const refs = {
   minutes: document.querySelector('[data-minutes]'),
   seconds: document.querySelector('[data-seconds]'),
   startBtn: document.querySelector('[data-start]'),
+  dateInput: document.querySelector('#datetime-picker'),
 };
 
 const options = {
@@ -41,10 +42,12 @@ const timer = {
     }
     const startTime = datePicker.selectedDates[0];
     this.isActive = true;
+    refs.startBtn.disabled = true;
 
     this.intervalId = setInterval(() => {
       const currentTime = Date.now();
       const deltaTime = startTime - currentTime;
+
       if (deltaTime < 0) {
         clearInterval(this.intervalId);
         this.isActive = false;
